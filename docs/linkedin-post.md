@@ -1,8 +1,8 @@
-I spent a few evenings rebuilding my own multi-agent setup in LangGraph, one primitive at a time. Here is what I learned.
+I spent a few evenings rebuilding my own multi-agent setup in LangGraph, one primitive at a time. The spark came from Khaled Elfakharany, whose write-up on running the Claude Agent SDK inside LangGraph nodes made the whole thing click. Credit where it is due.
 
-Background. I run a config-driven agent orchestrator inside Claude Code. A router picks a specialist, the specialist does the work, an adversarial reviewer gates the result. I kept hearing LangGraph and the Claude Agent SDK described as some new kind of magic. They are not. They name concepts I already use every day: orchestration, state, deterministic routing, retries.
+Background. I run a config-driven agent orchestrator inside Claude Code. A router picks a specialist, the specialist does the work, an adversarial reviewer gates the result. I kept hearing LangGraph and the Claude Agent SDK called some new kind of magic. They are not. They name concepts I already use every day: orchestration, state, deterministic routing, retries.
 
-So I tested that claim. I ported my orchestrator to LangGraph and learned the framework by climbing 16 small rungs, each adding exactly one concept:
+Khaled's pattern gave me the missing piece: each LangGraph node is a full Claude agent, the graph owns control flow, the SDK owns execution. So I tested it. I ported my orchestrator and learned the framework by climbing 16 small rungs, each adding one concept:
 
 - one Claude Agent SDK call
 - wrap it in a graph node
@@ -20,6 +20,6 @@ What it is not: production infrastructure. No durable backends, tracing, or eval
 
 The lesson held. The frameworks are thin. The hard parts are good prompts, sane routing, and clean state, and those transfer between any of them.
 
-Repo is public, link in the comments.
+Thanks Khaled for the idea. Repo and the original article in the comments.
 
 #LangGraph #AIAgents #ClaudeAI #LLM
