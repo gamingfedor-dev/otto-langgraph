@@ -6,38 +6,40 @@
 <title>otto-langgraph architecture</title>
 <style>
   :root {
-    --bg: #0d1117; --panel: #161b22; --line: #30363d;
-    --text: #c9d1d9; --dim: #8b949e;
-    --sup: #f0883e; --spec: #58a6ff; --fin: #3fb950; --edge: #6e7681;
+    --bg: #0b140a; --panel: #14210e; --line: #2c3b21;
+    --text: #ece9dc; --dim: #93a07c;
+    --green: #8fbe6a; --green-soft: #b7d89a; --edge: #6c7a58;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; background: var(--bg); color: var(--text);
+    margin: 0; color: var(--text);
+    background: radial-gradient(120% 85% at 50% 0%, #1c3214 0%, #0e1b0c 55%, #080d07 100%) fixed;
     font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  .wrap { max-width: 980px; margin: 0 auto; padding: 40px 24px 64px; }
-  h1 { font-size: 28px; margin: 0 0 4px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 24px 64px; }
+  h1 { font-size: 30px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h1 .dot { color: var(--green); }
   .sub { color: var(--dim); margin: 0 0 32px; }
-  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-  h2 { font-size: 16px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); margin: 0 0 16px; }
+  .panel { background: rgba(20,33,14,0.6); border: 1px solid var(--line); border-radius: 14px; padding: 24px; margin-bottom: 22px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--dim); margin: 0 0 18px; }
   svg { width: 100%; height: auto; display: block; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .card { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+  .card { border: 1px solid var(--line); border-radius: 9px; padding: 12px 14px; }
   .card b { color: var(--text); }
   .card span { color: var(--dim); font-size: 13px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  td { padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td:first-child { color: var(--spec); white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--sup); }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { color: var(--green); white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--green-soft); }
   .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 640px) { .modes { grid-template-columns: 1fr; } }
   footer { color: var(--dim); font-size: 13px; text-align: center; margin-top: 8px; }
-  a { color: var(--spec); }
+  .tags { color: var(--dim); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; letter-spacing: .04em; margin-top: 6px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>otto-langgraph</h1>
+  <h1>otto-langgraph<span class="dot">.</span></h1>
   <p class="sub">Claude Agent SDK inside LangGraph nodes. A supervisor orchestrates a roster of specialists.</p>
 
   <div class="panel">
@@ -45,47 +47,45 @@
     <svg viewBox="0 0 760 560" role="img" aria-label="Otto orchestration flow">
       <defs>
         <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#6e7681"/>
+          <path d="M0,0 L10,5 L0,10 z" fill="#6c7a58"/>
         </marker>
       </defs>
 
-      <!-- edges -->
       <path d="M380,70 L380,118" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
       <path d="M380,178 L380,248" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="392" y="217" fill="#8b949e" font-size="13">pick</text>
+      <text x="392" y="217" fill="#93a07c" font-size="13">pick</text>
 
       <path d="M580,290 C672,252 672,150 474,150" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="628" y="214" fill="#8b949e" font-size="13">loop</text>
+      <text x="628" y="214" fill="#93a07c" font-size="13">loop</text>
 
       <path d="M290,150 C150,206 150,404 298,428" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="120" y="296" fill="#8b949e" font-size="13">done</text>
+      <text x="120" y="296" fill="#93a07c" font-size="13">done</text>
 
       <path d="M380,454 L380,500" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
 
-      <!-- nodes -->
       <g>
-        <rect x="320" y="28" width="120" height="42" rx="9" fill="var(--panel)" stroke="var(--line)"/>
-        <text x="380" y="54" text-anchor="middle" fill="#c9d1d9" font-size="14">START</text>
+        <rect x="320" y="28" width="120" height="42" rx="9" fill="#14210e" stroke="var(--line)"/>
+        <text x="380" y="54" text-anchor="middle" fill="#ece9dc" font-size="14">START</text>
       </g>
       <g>
-        <rect x="288" y="120" width="184" height="58" rx="11" fill="var(--panel)" stroke="var(--sup)" stroke-width="2"/>
-        <text x="380" y="146" text-anchor="middle" fill="#f0883e" font-size="15" font-weight="600">supervisor</text>
-        <text x="380" y="164" text-anchor="middle" fill="#8b949e" font-size="11">structured Decision</text>
+        <rect x="288" y="120" width="184" height="58" rx="12" fill="#14210e" stroke="#ece9dc" stroke-width="1.6"/>
+        <text x="380" y="146" text-anchor="middle" fill="#ece9dc" font-size="15" font-weight="600">supervisor</text>
+        <text x="380" y="164" text-anchor="middle" fill="#93a07c" font-size="11">structured Decision</text>
       </g>
       <g>
-        <rect x="180" y="250" width="400" height="82" rx="11" fill="var(--panel)" stroke="var(--spec)" stroke-width="2"/>
-        <text x="380" y="278" text-anchor="middle" fill="#58a6ff" font-size="15" font-weight="600">specialists (11)</text>
-        <text x="380" y="300" text-anchor="middle" fill="#8b949e" font-size="12">o7 rock armin gojo devil qa</text>
-        <text x="380" y="317" text-anchor="middle" fill="#8b949e" font-size="12">mav bob hanji pylyp loid</text>
+        <rect x="180" y="250" width="400" height="82" rx="12" fill="#14210e" stroke="#8fbe6a" stroke-width="1.8"/>
+        <text x="380" y="278" text-anchor="middle" fill="#8fbe6a" font-size="15" font-weight="600">specialists (11)</text>
+        <text x="380" y="300" text-anchor="middle" fill="#93a07c" font-size="12">o7 rock armin gojo devil qa</text>
+        <text x="380" y="317" text-anchor="middle" fill="#93a07c" font-size="12">mav bob hanji pylyp loid</text>
       </g>
       <g>
-        <rect x="300" y="400" width="160" height="54" rx="11" fill="var(--panel)" stroke="var(--fin)" stroke-width="2"/>
-        <text x="380" y="426" text-anchor="middle" fill="#3fb950" font-size="15" font-weight="600">finalize</text>
-        <text x="380" y="444" text-anchor="middle" fill="#8b949e" font-size="11">merge history</text>
+        <rect x="300" y="400" width="160" height="54" rx="12" fill="#14210e" stroke="#b7d89a" stroke-width="1.6"/>
+        <text x="380" y="426" text-anchor="middle" fill="#b7d89a" font-size="15" font-weight="600">finalize</text>
+        <text x="380" y="444" text-anchor="middle" fill="#93a07c" font-size="11">merge history</text>
       </g>
       <g>
-        <rect x="332" y="500" width="96" height="40" rx="9" fill="var(--panel)" stroke="var(--line)"/>
-        <text x="380" y="525" text-anchor="middle" fill="#c9d1d9" font-size="14">END</text>
+        <rect x="332" y="500" width="96" height="40" rx="9" fill="#14210e" stroke="var(--line)"/>
+        <text x="380" y="525" text-anchor="middle" fill="#ece9dc" font-size="14">END</text>
       </g>
     </svg>
   </div>
@@ -120,7 +120,10 @@
     </div>
   </div>
 
-  <footer>Built rung by rung across 16 tutorial steps in <code>learning/</code>, then composed into <code>otto/</code>.</footer>
+  <footer>
+    Built rung by rung across 16 tutorial steps in <code>learning/</code>, then composed into <code>otto/</code>.
+    <div class="tags">react &middot; angular &middot; typescript &middot; python &middot; claude_code</div>
+  </footer>
 </div>
 </body>
 </html>
