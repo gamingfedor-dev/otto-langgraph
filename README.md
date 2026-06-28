@@ -27,13 +27,32 @@ task, picks one specialist, runs it, then sends the result through an adversaria
 
 ## Learning ladder
 
-Built one rung at a time:
+Built one rung at a time, each rung adds one concept.
+
+Done:
 
 1. One Claude Agent SDK call, standalone. See the message stream. (`rung1.py`)
-2. Wrap the call in one LangGraph node. Watch state flow in and out.
-3. Add a second node and an edge.
-4. Add the router and a conditional edge.
-5. Add the verify gate and loop-back. Mini-Otto.
+2. Wrap the call in one LangGraph node. State flows in and out. (`rung2.py`)
+3. Two nodes and an edge. Second node reads what the first wrote. (`rung3.py`)
+4. Router plus a conditional edge. The graph picks a specialist. (`rung4.py`)
+5. Verify gate and bounded loop-back. Mini-Otto. (`rung5.py`)
+
+Ahead, toward maximum complexity:
+
+6. Parallel fan-out. Run a squad of specialists at once.
+7. Reducers and `Annotated` state. Merge parallel results without clobber.
+8. Structured output. Agents return typed JSON, parsed reliably.
+9. Streaming and checkpoints. Watch state per step, resume after a stop.
+10. Subgraphs and dynamic fan-out (`Send`). Spawn N workers at runtime. Full Otto.
+
+## Two cages, two stops
+
+Every loop has a smart stop and a dumb backstop, at two scales:
+
+| Layer | Smart stop | Dumb backstop |
+|-------|-----------|---------------|
+| Inside a node (SDK) | model emits `end_turn` | `max_turns` |
+| Across the graph (LangGraph) | verdict or revision cap | `recursion_limit` |
 
 ## Run
 
