@@ -1,8 +1,9 @@
 from .config import OttoConfig
 from .graph import build_otto, OttoState
 from .roster import SPECIALISTS
+from .chat import build_chat, chat
 
-__all__ = ["OttoConfig", "build_otto", "OttoState", "SPECIALISTS", "run_otto"]
+__all__ = ["OttoConfig", "build_otto", "OttoState", "SPECIALISTS", "run_otto", "build_chat", "chat"]
 
 
 async def run_otto(task: str, config: OttoConfig | None = None, thread_id: str = "default") -> dict:

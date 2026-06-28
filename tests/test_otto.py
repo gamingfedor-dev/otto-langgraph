@@ -1,4 +1,4 @@
-from otto import build_otto, OttoConfig, SPECIALISTS
+from otto import build_otto, build_chat, OttoConfig, SPECIALISTS
 from otto.graph import _route
 
 
@@ -13,6 +13,10 @@ def test_build_compiles():
 
 def test_build_with_persistence():
     assert build_otto(OttoConfig(persist=True)) is not None
+
+
+def test_build_chat_compiles():
+    assert build_chat(OttoConfig()) is not None
 
 
 def test_route_to_specialist():
