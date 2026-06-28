@@ -10,13 +10,16 @@ __all__ = [
 ]
 
 
-async def run_agent(system_prompt: str, user_prompt: str, max_turns: int = 2) -> str:
+NO_TOOLS = " Answer directly from your own reasoning. Do not call any tools."
+
+
+async def run_agent(system_prompt: str, user_prompt: str, max_turns: int = 6) -> str:
     chunks = []
     async for msg in query(
         prompt=user_prompt,
         options=ClaudeAgentOptions(
             max_turns=max_turns,
-            system_prompt=system_prompt,
+            system_prompt=system_prompt + NO_TOOLS,
             setting_sources=[],
             allowed_tools=[],
         ),
