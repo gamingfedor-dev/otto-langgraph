@@ -27,15 +27,15 @@ task, picks one specialist, runs it, then sends the result through an adversaria
 
 ## Learning ladder
 
-Built one rung at a time, each rung adds one concept.
+Built one rung at a time, each rung adds one concept. All rungs live in `learning/`.
 
 Done:
 
-1. One Claude Agent SDK call, standalone. See the message stream. (`rung1.py`)
-2. Wrap the call in one LangGraph node. State flows in and out. (`rung2.py`)
-3. Two nodes and an edge. Second node reads what the first wrote. (`rung3.py`)
-4. Router plus a conditional edge. The graph picks a specialist. (`rung4.py`)
-5. Verify gate and bounded loop-back. Mini-Otto. (`rung5.py`)
+1. One Claude Agent SDK call, standalone. See the message stream. (`learning/rung1.py`)
+2. Wrap the call in one LangGraph node. State flows in and out. (`learning/rung2.py`)
+3. Two nodes and an edge. Second node reads what the first wrote. (`learning/rung3.py`)
+4. Router plus a conditional edge. The graph picks a specialist. (`learning/rung4.py`)
+5. Verify gate and bounded loop-back. Mini-Otto. (`learning/rung5.py`)
 
 Ahead, one primitive per rung, toward the full framework:
 
@@ -66,7 +66,7 @@ Every loop has a smart stop and a dumb backstop, at two scales:
 pip install -r requirements.txt
 npm i -g @anthropic-ai/claude-code
 export ANTHROPIC_API_KEY=sk-ant-...
-python rung1.py
+python learning/rung1.py
 ```
 
 ## otto/ (the production package)
