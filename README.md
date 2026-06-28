@@ -37,13 +37,19 @@ Done:
 4. Router plus a conditional edge. The graph picks a specialist. (`rung4.py`)
 5. Verify gate and bounded loop-back. Mini-Otto. (`rung5.py`)
 
-Ahead, toward maximum complexity:
+Ahead, one primitive per rung, toward the full framework:
 
 6. Parallel fan-out. Run a squad of specialists at once.
-7. Reducers and `Annotated` state. Merge parallel results without clobber.
-8. Structured output. Agents return typed JSON, parsed reliably.
-9. Streaming and checkpoints. Watch state per step, resume after a stop.
-10. Subgraphs and dynamic fan-out (`Send`). Spawn N workers at runtime. Full Otto.
+7. Reducers. `Annotated[list, add]` merges parallel results without clobber.
+8. Structured output. Agents return typed Pydantic objects, no string sniffing.
+9. Streaming. `astream` and its modes: values, updates, messages.
+10. Persistence. A checkpointer plus `thread_id` survives a stop mid-graph.
+11. Human-in-the-loop. `interrupt` pauses for input, `Command(resume=...)` continues.
+12. Subgraphs. A whole graph runs as one node in a parent graph.
+13. Dynamic fan-out. `Send` spawns N workers from a runtime list (map-reduce).
+14. Long-term memory. A store holds facts across threads, not just one run.
+15. Time travel. Inspect state history, edit a past step, replay from there.
+16. Capstone. Supervisor pattern, retry policy, config. The full Otto.
 
 ## Two cages, two stops
 
