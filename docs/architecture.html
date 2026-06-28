@@ -6,18 +6,20 @@
 <title>otto-langgraph architecture</title>
 <style>
   :root {
-    --bg: #080b12; --grid: rgba(120,160,200,.045);
-    --panel: rgba(140,170,210,.022); --panel-line: rgba(130,165,205,.10);
-    --text: #e6edf6; --dim: #7d8aa0; --faint: #5b6679;
-    --cyan: #46b6e8; --green: #4fbf86;
+    --grid: rgba(150,195,120,.05);
+    --panel: rgba(150,195,130,.022); --panel-line: rgba(150,190,130,.12);
+    --text: #ece9dc; --dim: #94a37b; --faint: #66715a;
+    --cream: #ece9dc; --green: #8fbe6a; --green-soft: #b7d89a; --edge: #6f7e57;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; color: var(--text); background-color: var(--bg);
+    margin: 0; color: var(--text);
+    background-color: #0a130a;
     background-image:
       linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 42px 42px;
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      radial-gradient(125% 85% at 50% 0%, #1d3315 0%, #0e1c0c 52%, #080f07 100%);
+    background-size: 42px 42px, 42px 42px, cover;
     font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 28px 48px; }
@@ -25,14 +27,15 @@
   header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 30px; }
   .brand { display: flex; gap: 16px; align-items: center; }
   .logo { width: 52px; height: 52px; border-radius: 13px; display: grid; place-items: center;
-    background: rgba(70,182,232,.10); border: 1px solid rgba(70,182,232,.35); box-shadow: 0 0 24px -8px rgba(70,182,232,.5); }
-  .brand h1 { font-size: 23px; margin: 0; color: var(--cyan); letter-spacing: -0.01em; }
+    background: rgba(143,190,106,.10); border: 1px solid rgba(143,190,106,.40); box-shadow: 0 0 26px -8px rgba(143,190,106,.5); }
+  .brand h1 { font-size: 23px; margin: 0; color: var(--cream); letter-spacing: -0.01em; }
+  .brand h1 .dot { color: var(--green); }
   .brand p { margin: 3px 0 0; color: var(--dim); font-size: 13.5px; }
   .badges { display: flex; gap: 10px; }
   .badge { display: flex; align-items: baseline; gap: 6px; padding: 8px 14px; border-radius: 10px;
-    background: rgba(140,170,210,.04); border: 1px solid var(--panel-line); }
-  .badge b { font-size: 16px; color: var(--cyan); }
-  .badge.alt b { color: var(--green); }
+    background: rgba(150,195,130,.05); border: 1px solid var(--panel-line); }
+  .badge b { font-size: 16px; color: var(--green); }
+  .badge.alt b { color: var(--green-soft); }
   .badge span { font-size: 12px; color: var(--dim); }
 
   .band { position: relative; border: 1px solid var(--panel-line); border-radius: 16px;
@@ -45,17 +48,17 @@
   .row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
   .center { justify-content: center; }
 
-  .node { --c: #46b6e8; display: flex; align-items: center; gap: 13px; padding: 13px 18px; border-radius: 13px;
+  .node { --c: #8fbe6a; display: flex; align-items: center; gap: 13px; padding: 13px 18px; border-radius: 13px;
     min-width: 210px;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--c) 14%, #0c111b), color-mix(in srgb, var(--c) 7%, #0a0e16));
-    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
-    box-shadow: 0 10px 30px -16px color-mix(in srgb, var(--c) 70%, transparent), inset 0 1px 0 color-mix(in srgb, var(--c) 18%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c) 15%, #0e1a0c), color-mix(in srgb, var(--c) 7%, #0b150a));
+    border: 1px solid color-mix(in srgb, var(--c) 48%, transparent);
+    box-shadow: 0 10px 30px -16px color-mix(in srgb, var(--c) 70%, transparent), inset 0 1px 0 color-mix(in srgb, var(--c) 20%, transparent);
   }
   .node .ic { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; flex: none;
-    background: color-mix(in srgb, var(--c) 20%, transparent);
-    border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); color: var(--c); }
+    background: color-mix(in srgb, var(--c) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 38%, transparent); color: var(--c); }
   .node .ic svg { width: 19px; height: 19px; }
-  .node .lab { font-weight: 600; color: color-mix(in srgb, var(--c) 80%, #ffffff); white-space: nowrap; }
+  .node .lab { font-weight: 600; color: color-mix(in srgb, var(--c) 78%, #ffffff); white-space: nowrap; }
   .node .sub { display: block; font-weight: 400; font-size: 11px; color: var(--dim); margin-top: 1px; }
   .node.wide { min-width: 260px; }
 
@@ -94,9 +97,9 @@
 
   <header>
     <div class="brand">
-      <div class="logo"><svg width="26" height="26" viewBox="0 0 24 24"><use href="#i-hub" color="#46b6e8"/></svg></div>
+      <div class="logo"><svg width="26" height="26" viewBox="0 0 24 24"><use href="#i-hub" color="#8fbe6a"/></svg></div>
       <div>
-        <h1>Otto Multi-Agent Orchestrator</h1>
+        <h1>Otto Multi-Agent Orchestrator<span class="dot">.</span></h1>
         <p>11 specialists &middot; Claude Agent SDK inside LangGraph</p>
       </div>
     </div>
@@ -109,7 +112,7 @@
   <div class="band">
     <div class="band-head"><div class="band-title">Input</div><div class="count">1 node</div></div>
     <div class="row center">
-      <div class="node wide" style="--c:#46b6e8">
+      <div class="node wide" style="--c:#dcd6b6">
         <div class="ic"><svg viewBox="0 0 24 24"><use href="#i-hub"/></svg></div>
         <div class="lab">supervisor<span class="sub">structured Decision, routes each turn</span></div>
       </div>
@@ -124,17 +127,17 @@
       <div class="count">11 nodes</div>
     </div>
     <div class="row">
-      <div class="node" style="--c:#5b8def"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-code"/></svg></div><div class="lab">o7<span class="sub">implement / fix code</span></div></div>
-      <div class="node" style="--c:#e0a834"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-gauge"/></svg></div><div class="lab">rock<span class="sub">performance</span></div></div>
-      <div class="node" style="--c:#2bb3a3"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></div><div class="lab">armin<span class="sub">map geometry</span></div></div>
-      <div class="node" style="--c:#9b6cf0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></div><div class="lab">gojo<span class="sub">memory safety</span></div></div>
-      <div class="node" style="--c:#e0556b"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-alert"/></svg></div><div class="lab">devil<span class="sub">adversarial review</span></div></div>
-      <div class="node" style="--c:#4fbf86"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></div><div class="lab">qa<span class="sub">test plans</span></div></div>
-      <div class="node" style="--c:#3fb6d8"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-cross"/></svg></div><div class="lab">mav<span class="sub">UAV domain</span></div></div>
-      <div class="node" style="--c:#d8923f"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-term"/></svg></div><div class="lab">bob<span class="sub">log triage</span></div></div>
-      <div class="node" style="--c:#6f7ce0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></div><div class="lab">hanji<span class="sub">evidence</span></div></div>
-      <div class="node" style="--c:#c065d0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-layers"/></svg></div><div class="lab">pylyp<span class="sub">abstraction skeptic</span></div></div>
-      <div class="node" style="--c:#8fbe6a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-book"/></svg></div><div class="lab">loid<span class="sub">teaching</span></div></div>
+      <div class="node" style="--c:#6f9be0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-code"/></svg></div><div class="lab">o7<span class="sub">implement / fix code</span></div></div>
+      <div class="node" style="--c:#d6a648"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-gauge"/></svg></div><div class="lab">rock<span class="sub">performance</span></div></div>
+      <div class="node" style="--c:#3fb59a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></div><div class="lab">armin<span class="sub">map geometry</span></div></div>
+      <div class="node" style="--c:#9f7ce4"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></div><div class="lab">gojo<span class="sub">memory safety</span></div></div>
+      <div class="node" style="--c:#dd6173"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-alert"/></svg></div><div class="lab">devil<span class="sub">adversarial review</span></div></div>
+      <div class="node" style="--c:#8fbe6a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></div><div class="lab">qa<span class="sub">test plans</span></div></div>
+      <div class="node" style="--c:#4bb6c8"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-cross"/></svg></div><div class="lab">mav<span class="sub">UAV domain</span></div></div>
+      <div class="node" style="--c:#d0974a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-term"/></svg></div><div class="lab">bob<span class="sub">log triage</span></div></div>
+      <div class="node" style="--c:#7e8ce0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></div><div class="lab">hanji<span class="sub">evidence</span></div></div>
+      <div class="node" style="--c:#bd72cf"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-layers"/></svg></div><div class="lab">pylyp<span class="sub">abstraction skeptic</span></div></div>
+      <div class="node" style="--c:#a7cf6a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-book"/></svg></div><div class="lab">loid<span class="sub">teaching</span></div></div>
     </div>
     <div class="loopnote">&#8635; each specialist returns to the supervisor; the loop runs until done, the cap, or the recursion limit</div>
   </div>
@@ -144,7 +147,7 @@
   <div class="band">
     <div class="band-head"><div class="band-title">Output</div><div class="count">1 node</div></div>
     <div class="row center">
-      <div class="node wide" style="--c:#4fbf86">
+      <div class="node wide" style="--c:#8fbe6a">
         <div class="ic"><svg viewBox="0 0 24 24"><use href="#i-flag"/></svg></div>
         <div class="lab">finalize<span class="sub">merge history into one answer</span></div>
       </div>
@@ -152,9 +155,9 @@
   </div>
 
   <div class="legend">
-    <div><i style="background:#46b6e8"></i> Supervisor</div>
-    <div><i style="background:#9b6cf0"></i> Specialists &times;11</div>
-    <div><i style="background:#4fbf86"></i> Finalize</div>
+    <div><i style="background:#dcd6b6"></i> Supervisor</div>
+    <div><i style="background:#9f7ce4"></i> Specialists &times;11</div>
+    <div><i style="background:#8fbe6a"></i> Finalize</div>
   </div>
 
   <div class="foot">react &middot; angular &middot; typescript &middot; python &middot; claude_code</div>
