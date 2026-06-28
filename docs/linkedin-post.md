@@ -1,20 +1,25 @@
-LangGraph and the Claude Agent SDK keep getting described as some new kind of magic.
+I almost skipped LangGraph. It looked like hype with a fresh vocabulary.
 
-I rebuilt my own multi-agent setup in both. They are not magic, and that is the good news.
+Khaled Elfakharany changed my mind. His write-up on running the Claude Agent SDK inside LangGraph nodes made it click: the graph owns control flow, each node is a full Claude agent.
 
-The push to actually try it came from Khaled Elfakharany. His write-up on running the Claude Agent SDK inside LangGraph nodes is what made it click: the graph owns the control flow, and each node is a full Claude agent.
+So I tested it against what I already run. An agent orchestrator inside Claude Code. A router picks a specialist. A reviewer gates the result.
 
-So I tested it against what I already had. I run a config-driven agent orchestrator inside Claude Code. A router picks a specialist, the specialist works, an adversarial reviewer gates the result.
+Then I saw it.
 
-The frameworks did not hand me new ideas. They named the ones I use every day: routing, state, retries, fan-out.
+LangGraph did not teach me new ideas. It named the ones I already use by instinct.
 
-I learned LangGraph the slow way anyway. Sixteen tiny steps, one concept each, from a single SDK call up to a supervisor that loops over 11 specialists. Then I composed them into a working package with structured routing, retries, optional persistence, and a chat mode that remembers across turns.
+Routing. State. Reducers. Retries. Fan-out. Persistence. Memory. Human-in-the-loop.
 
-What it is: a working orchestrator that runs on your Claude login.
-What it is not: production infrastructure. No durable backends or tracing yet. The graph is the hard part, and that part is done.
+Every one a move I already reach for. The framework just handed them a vocabulary and a graph.
 
-The lesson stuck. The frameworks are thin. The hard parts are good prompts, clean state, and sane routing, and those move with you between any of them.
+The tool is thin. The judgment is everything.
 
-If you keep avoiding one of these tools because it looks like a wall of new concepts, it probably is not. Which one are you putting off?
+Good prompts. Clean state. Sane routing. Those travel with you, whichever framework is in fashion this quarter.
+
+So I built the thing: a supervisor that loops over 11 specialists, structured routing, retries, persistence, a chat mode that remembers across turns. Runs on a Claude login.
+
+If a tool looks like a wall of new concepts, look closer. It is usually familiar ground wearing new names.
+
+Which one have you been putting off?
 
 #LangGraph #AIAgents #ClaudeAI
