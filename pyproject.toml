@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otto-langgraph"
+version = "0.1.0"
+description = "Multi-agent orchestrator: Claude Agent SDK inside LangGraph nodes"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
+    "claude-agent-sdk>=0.1",
+    "pydantic>=2",
+]
+
+[project.scripts]
+otto = "otto.__main__:main"
+
+[tool.setuptools]
+packages = ["otto"]

@@ -69,6 +69,64 @@ export ANTHROPIC_API_KEY=sk-ant-...
 python rung1.py
 ```
 
+## otto/ (the production package)
+
+The 16 rungs teach the primitives. `otto/` composes them into one orchestrator.
+
+```bash
+pip install -e .
+otto "Make our 8-second drone reconnect faster and safer"
+otto "Audit this camera pipeline for leaks" --max-specialists 4 --persist
+```
+
+Or from Python:
+
+```python
+import asyncio
+from otto import run_otto, OttoConfig
+
+result = asyncio.run(run_otto("Profile the render loop", OttoConfig(max_specialists=4)))
+print(result["final"])
+```
+
+### Architecture
+
+```
+START -> supervisor --pick--> specialist -> supervisor (loop) --done--> finalize -> END
+```
+
+- **Supervisor loop** picks the next specialist each turn from the roster, or stops.
+- **Roster** is 11 specialists, one system prompt each (`roster.py`).
+- **Structured routing**: the supervisor returns a validated `Decision`, no string sniffing.
+- **Reducer**: every specialist appends to one shared `history` list.
+- **Retry**: each specialist node carries a `RetryPolicy` for transient failures.
+- **Config**: `OttoConfig` tunes model, caps, retries, persistence.
+- **Bounded** by three stops: supervisor `done`, `max_specialists` cap, `recursion_limit`.
+
+| Module | Holds |
+|--------|-------|
+| `config.py` | `OttoConfig` |
+| `sdk.py` | `run_agent`, `run_structured` (tool-free Claude calls) |
+| `roster.py` | the specialist system prompts |
+| `schemas.py` | the `Decision` contract |
+| `graph.py` | `build_otto`, the StateGraph |
+| `__main__.py` | the `otto` CLI |
+
+### What it is and is not
+
+It is a working orchestrator that composes every rung: routing, loops,
+reducers, structured output, retry, persistence, dynamic control flow. It runs
+on your Claude login or an `ANTHROPIC_API_KEY`.
+
+For real production you would still add durable checkpoint and store backends
+(Postgres over the in-memory ones), tracing and metrics, an eval harness, and
+rate-limit handling. The graph is the hard part and it is here. Those are
+operational layers around it.
+
+```bash
+pytest          # structural tests: build, routing, roster
+```
+
 ## Credit
 
 Integration pattern from Khaled Elfakharany,
