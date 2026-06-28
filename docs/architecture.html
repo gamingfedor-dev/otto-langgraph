@@ -6,124 +6,158 @@
 <title>otto-langgraph architecture</title>
 <style>
   :root {
-    --bg: #0b140a; --panel: #14210e; --line: #2c3b21;
-    --text: #ece9dc; --dim: #93a07c;
-    --green: #8fbe6a; --green-soft: #b7d89a; --edge: #6c7a58;
+    --bg: #080b12; --grid: rgba(120,160,200,.045);
+    --panel: rgba(140,170,210,.022); --panel-line: rgba(130,165,205,.10);
+    --text: #e6edf6; --dim: #7d8aa0; --faint: #5b6679;
+    --cyan: #46b6e8; --green: #4fbf86;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; color: var(--text);
-    background: radial-gradient(120% 85% at 50% 0%, #1c3214 0%, #0e1b0c 55%, #080d07 100%) fixed;
-    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; color: var(--text); background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 42px 42px;
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 24px 64px; }
-  h1 { font-size: 30px; margin: 0 0 4px; letter-spacing: -0.01em; }
-  h1 .dot { color: var(--green); }
-  .sub { color: var(--dim); margin: 0 0 32px; }
-  .panel { background: rgba(20,33,14,0.6); border: 1px solid var(--line); border-radius: 14px; padding: 24px; margin-bottom: 22px; }
-  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--dim); margin: 0 0 18px; }
-  svg { width: 100%; height: auto; display: block; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .card { border: 1px solid var(--line); border-radius: 9px; padding: 12px 14px; }
-  .card b { color: var(--text); }
-  .card span { color: var(--dim); font-size: 13px; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td:first-child { color: var(--green); white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--green-soft); }
-  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 640px) { .modes { grid-template-columns: 1fr; } }
-  footer { color: var(--dim); font-size: 13px; text-align: center; margin-top: 8px; }
-  .tags { color: var(--dim); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; letter-spacing: .04em; margin-top: 6px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 36px 28px 48px; }
+
+  header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 30px; }
+  .brand { display: flex; gap: 16px; align-items: center; }
+  .logo { width: 52px; height: 52px; border-radius: 13px; display: grid; place-items: center;
+    background: rgba(70,182,232,.10); border: 1px solid rgba(70,182,232,.35); box-shadow: 0 0 24px -8px rgba(70,182,232,.5); }
+  .brand h1 { font-size: 23px; margin: 0; color: var(--cyan); letter-spacing: -0.01em; }
+  .brand p { margin: 3px 0 0; color: var(--dim); font-size: 13.5px; }
+  .badges { display: flex; gap: 10px; }
+  .badge { display: flex; align-items: baseline; gap: 6px; padding: 8px 14px; border-radius: 10px;
+    background: rgba(140,170,210,.04); border: 1px solid var(--panel-line); }
+  .badge b { font-size: 16px; color: var(--cyan); }
+  .badge.alt b { color: var(--green); }
+  .badge span { font-size: 12px; color: var(--dim); }
+
+  .band { position: relative; border: 1px solid var(--panel-line); border-radius: 16px;
+    background: var(--panel); padding: 44px 22px 22px; margin: 0; }
+  .band-head { position: absolute; top: 14px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .band-title { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); display: flex; align-items: center; gap: 10px; }
+  .par { color: var(--faint); font-size: 11px; letter-spacing: .04em; display: inline-flex; align-items: center; gap: 4px; }
+  .count { font-size: 12px; color: var(--faint); }
+
+  .row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .center { justify-content: center; }
+
+  .node { --c: #46b6e8; display: flex; align-items: center; gap: 13px; padding: 13px 18px; border-radius: 13px;
+    min-width: 210px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--c) 14%, #0c111b), color-mix(in srgb, var(--c) 7%, #0a0e16));
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 10px 30px -16px color-mix(in srgb, var(--c) 70%, transparent), inset 0 1px 0 color-mix(in srgb, var(--c) 18%, transparent);
+  }
+  .node .ic { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; flex: none;
+    background: color-mix(in srgb, var(--c) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); color: var(--c); }
+  .node .ic svg { width: 19px; height: 19px; }
+  .node .lab { font-weight: 600; color: color-mix(in srgb, var(--c) 80%, #ffffff); white-space: nowrap; }
+  .node .sub { display: block; font-weight: 400; font-size: 11px; color: var(--dim); margin-top: 1px; }
+  .node.wide { min-width: 260px; }
+
+  .arrow { display: grid; place-items: center; height: 46px; color: var(--faint); }
+  .arrow svg { width: 18px; height: 26px; }
+
+  .loopnote { text-align: center; color: var(--faint); font-size: 12px; margin-top: 14px; letter-spacing: .03em; }
+
+  .legend { display: flex; gap: 26px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+  .legend div { display: flex; align-items: center; gap: 8px; color: var(--dim); font-size: 13px; }
+  .legend i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+  .foot { text-align: center; color: var(--faint); font-size: 12px; margin-top: 22px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .04em; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>otto-langgraph<span class="dot">.</span></h1>
-  <p class="sub">Claude Agent SDK inside LangGraph nodes. A supervisor orchestrates a roster of specialists.</p>
 
-  <div class="panel">
-    <h2>The flow</h2>
-    <svg viewBox="0 0 760 560" role="img" aria-label="Otto orchestration flow">
-      <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#6c7a58"/>
-        </marker>
-      </defs>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="i-hub" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/><path d="M12 7v3M12 10l-5 7M12 10l5 7"/></g>
+    <g id="i-code" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-4 5 4 5M15 7l4 5-4 5"/></g>
+    <g id="i-gauge" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 17a8 8 0 0116 0"/><path d="M12 17l4-5"/></g>
+    <g id="i-map" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.5 6-10a6 6 0 10-12 0c0 4.5 6 10 6 10z"/><circle cx="12" cy="11" r="2"/></g>
+    <g id="i-shield" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></g>
+    <g id="i-alert" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17h.01"/></g>
+    <g id="i-check" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></g>
+    <g id="i-cross" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></g>
+    <g id="i-term" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l4 4-4 4M12 16h6"/></g>
+    <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/></g>
+    <g id="i-layers" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></g>
+    <g id="i-book" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h12v16H7a2 2 0 01-2-2z"/><path d="M5 17h12"/></g>
+    <g id="i-flag" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4M6 4h11l-2 4 2 4H6"/></g>
+    <g id="i-down" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v16M9 20l-5-5M9 20l5-5"/></g>
+  </defs></svg>
 
-      <path d="M380,70 L380,118" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <path d="M380,178 L380,248" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="392" y="217" fill="#93a07c" font-size="13">pick</text>
+  <header>
+    <div class="brand">
+      <div class="logo"><svg width="26" height="26" viewBox="0 0 24 24"><use href="#i-hub" color="#46b6e8"/></svg></div>
+      <div>
+        <h1>Otto Multi-Agent Orchestrator</h1>
+        <p>11 specialists &middot; Claude Agent SDK inside LangGraph</p>
+      </div>
+    </div>
+    <div class="badges">
+      <div class="badge"><b>13</b><span>nodes</span></div>
+      <div class="badge alt"><b>3</b><span>phases</span></div>
+    </div>
+  </header>
 
-      <path d="M580,290 C672,252 672,150 474,150" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="628" y="214" fill="#93a07c" font-size="13">loop</text>
-
-      <path d="M290,150 C150,206 150,404 298,428" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-      <text x="120" y="296" fill="#93a07c" font-size="13">done</text>
-
-      <path d="M380,454 L380,500" stroke="var(--edge)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
-
-      <g>
-        <rect x="320" y="28" width="120" height="42" rx="9" fill="#14210e" stroke="var(--line)"/>
-        <text x="380" y="54" text-anchor="middle" fill="#ece9dc" font-size="14">START</text>
-      </g>
-      <g>
-        <rect x="288" y="120" width="184" height="58" rx="12" fill="#14210e" stroke="#ece9dc" stroke-width="1.6"/>
-        <text x="380" y="146" text-anchor="middle" fill="#ece9dc" font-size="15" font-weight="600">supervisor</text>
-        <text x="380" y="164" text-anchor="middle" fill="#93a07c" font-size="11">structured Decision</text>
-      </g>
-      <g>
-        <rect x="180" y="250" width="400" height="82" rx="12" fill="#14210e" stroke="#8fbe6a" stroke-width="1.8"/>
-        <text x="380" y="278" text-anchor="middle" fill="#8fbe6a" font-size="15" font-weight="600">specialists (11)</text>
-        <text x="380" y="300" text-anchor="middle" fill="#93a07c" font-size="12">o7 rock armin gojo devil qa</text>
-        <text x="380" y="317" text-anchor="middle" fill="#93a07c" font-size="12">mav bob hanji pylyp loid</text>
-      </g>
-      <g>
-        <rect x="300" y="400" width="160" height="54" rx="12" fill="#14210e" stroke="#b7d89a" stroke-width="1.6"/>
-        <text x="380" y="426" text-anchor="middle" fill="#b7d89a" font-size="15" font-weight="600">finalize</text>
-        <text x="380" y="444" text-anchor="middle" fill="#93a07c" font-size="11">merge history</text>
-      </g>
-      <g>
-        <rect x="332" y="500" width="96" height="40" rx="9" fill="#14210e" stroke="var(--line)"/>
-        <text x="380" y="525" text-anchor="middle" fill="#ece9dc" font-size="14">END</text>
-      </g>
-    </svg>
-  </div>
-
-  <div class="panel">
-    <h2>Composed primitives</h2>
-    <table>
-      <tr><td>conditional edge</td><td>supervisor routes to a specialist or to finalize</td></tr>
-      <tr><td>cycle</td><td>specialist returns to supervisor, bounded by a recursion limit</td></tr>
-      <tr><td>reducer</td><td>every specialist appends to one shared <code>history</code> list</td></tr>
-      <tr><td>structured output</td><td>the supervisor returns a validated Pydantic <code>Decision</code></td></tr>
-      <tr><td>retry policy</td><td>each specialist node retries on transient failure</td></tr>
-      <tr><td>persistence</td><td>checkpointer plus store, optional, for memory across runs</td></tr>
-      <tr><td>config</td><td><code>OttoConfig</code> tunes model, caps, retries, persistence</td></tr>
-    </table>
-  </div>
-
-  <div class="panel">
-    <h2>Three stops</h2>
-    <div class="grid">
-      <div class="card"><b>supervisor done</b><br><span>the model decides the task is complete</span></div>
-      <div class="card"><b>max_specialists</b><br><span>config cap on how many specialists run</span></div>
-      <div class="card"><b>recursion_limit</b><br><span>dumb backstop against a runaway loop</span></div>
+  <div class="band">
+    <div class="band-head"><div class="band-title">Input</div><div class="count">1 node</div></div>
+    <div class="row center">
+      <div class="node wide" style="--c:#46b6e8">
+        <div class="ic"><svg viewBox="0 0 24 24"><use href="#i-hub"/></svg></div>
+        <div class="lab">supervisor<span class="sub">structured Decision, routes each turn</span></div>
+      </div>
     </div>
   </div>
 
-  <div class="panel">
-    <h2>Two modes</h2>
-    <div class="modes">
-      <div class="card"><b>one-shot</b><br><span><code>otto "task"</code> runs once, prints the answer.</span></div>
-      <div class="card"><b>chat</b><br><span><code>otto --chat</code> keeps a thread alive; an outer checkpointer holds the transcript while the orchestrator runs fresh each turn.</span></div>
+  <div class="arrow"><svg viewBox="0 0 18 26"><use href="#i-down"/></svg></div>
+
+  <div class="band">
+    <div class="band-head">
+      <div class="band-title">Specialists <span class="par">&#9889; dynamic loop</span></div>
+      <div class="count">11 nodes</div>
+    </div>
+    <div class="row">
+      <div class="node" style="--c:#5b8def"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-code"/></svg></div><div class="lab">o7<span class="sub">implement / fix code</span></div></div>
+      <div class="node" style="--c:#e0a834"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-gauge"/></svg></div><div class="lab">rock<span class="sub">performance</span></div></div>
+      <div class="node" style="--c:#2bb3a3"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-map"/></svg></div><div class="lab">armin<span class="sub">map geometry</span></div></div>
+      <div class="node" style="--c:#9b6cf0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-shield"/></svg></div><div class="lab">gojo<span class="sub">memory safety</span></div></div>
+      <div class="node" style="--c:#e0556b"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-alert"/></svg></div><div class="lab">devil<span class="sub">adversarial review</span></div></div>
+      <div class="node" style="--c:#4fbf86"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></div><div class="lab">qa<span class="sub">test plans</span></div></div>
+      <div class="node" style="--c:#3fb6d8"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-cross"/></svg></div><div class="lab">mav<span class="sub">UAV domain</span></div></div>
+      <div class="node" style="--c:#d8923f"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-term"/></svg></div><div class="lab">bob<span class="sub">log triage</span></div></div>
+      <div class="node" style="--c:#6f7ce0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></div><div class="lab">hanji<span class="sub">evidence</span></div></div>
+      <div class="node" style="--c:#c065d0"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-layers"/></svg></div><div class="lab">pylyp<span class="sub">abstraction skeptic</span></div></div>
+      <div class="node" style="--c:#8fbe6a"><div class="ic"><svg viewBox="0 0 24 24"><use href="#i-book"/></svg></div><div class="lab">loid<span class="sub">teaching</span></div></div>
+    </div>
+    <div class="loopnote">&#8635; each specialist returns to the supervisor; the loop runs until done, the cap, or the recursion limit</div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 18 26"><use href="#i-down"/></svg></div>
+
+  <div class="band">
+    <div class="band-head"><div class="band-title">Output</div><div class="count">1 node</div></div>
+    <div class="row center">
+      <div class="node wide" style="--c:#4fbf86">
+        <div class="ic"><svg viewBox="0 0 24 24"><use href="#i-flag"/></svg></div>
+        <div class="lab">finalize<span class="sub">merge history into one answer</span></div>
+      </div>
     </div>
   </div>
 
-  <footer>
-    Built rung by rung across 16 tutorial steps in <code>learning/</code>, then composed into <code>otto/</code>.
-    <div class="tags">react &middot; angular &middot; typescript &middot; python &middot; claude_code</div>
-  </footer>
+  <div class="legend">
+    <div><i style="background:#46b6e8"></i> Supervisor</div>
+    <div><i style="background:#9b6cf0"></i> Specialists &times;11</div>
+    <div><i style="background:#4fbf86"></i> Finalize</div>
+  </div>
+
+  <div class="foot">react &middot; angular &middot; typescript &middot; python &middot; claude_code</div>
 </div>
 </body>
 </html>
